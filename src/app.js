@@ -20,6 +20,49 @@ function formatDate(timestamp) {
   let day = days[date.getDay()];
   return `${day} ${hours}:${minutes}`;
 }
+
+function displayForecast(response) {
+  let forecastElement = document.querySelector("#forecast");
+
+  let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"];
+
+  let forecastHTML = ` <div class="row">`;
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `
+     <div class="col-2">
+                <div class="weather-forecast-date">
+                ${day}
+                </div>
+                <img src="http://openweathermap.org/img/wn/50d@2x.png" 
+                alt=""
+                width="36"/>
+                <div class="weather-forecast-temperatures">
+                  <span class="weather-forecast-temperature-max">
+                18
+                <span class="weather-forecast-temperature-min">
+                
+                 12
+                 </span>
+</div>
+              </div>
+            
+          
+    `;
+  });
+
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
+function getForecast(coordinates) {
+  console.log(coordinates);
+  let apiKey = "4c13efb242fa19ea8b668c307bf38b0b";
+  let apiUrl =
+    "https://api.openweathermap.org/data/2.5/onecall?lat=i{coordinates.lat}&lon=i{coordinates.lon}&appid=i{apiKey}&units=metric";
+  console.log(apiUrl);
+  axios.get(apiUrl).then(displayForecast);
+}
 function displayTemperature(response) {
   let temperatureElement = document.querySelector("#temperature");
   let cityElement = document.querySelector("#city");
@@ -43,6 +86,8 @@ function displayTemperature(response) {
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}d@2x.png`
   );
   iconElement.setAttribute("alt", response.data.weather[0].description);
+
+  getForecast(response.data.coord);
 }
 function searchCity(city) {
   let apiKey = "4c13efb242fa19ea8b668c307bf38b0b";
@@ -84,3 +129,4 @@ let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
 searchCity("Yaounde");
+displayForecast;
