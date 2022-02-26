@@ -20,30 +20,37 @@ function formatDate(timestamp) {
   let day = days[date.getDay()];
   return `${day} ${hours}:${minutes}`;
 }
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = day.getDate();
+
+  return day;
+}
 
 function displayForecast(response) {
   let forecastElement = document.querySelector("#forecast");
+  let forecast = response.data.daily;
 
   let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"];
 
   let forecastHTML = ` <div class="row">`;
-  days.forEach(function (day) {
+  days.forEach(function (forecastDay) {
     forecastHTML =
       forecastHTML +
       `
      <div class="col-2">
-                <div class="weather-forecast-date">
-                ${day}
+                <div class="weather-forecast-date">i{formatDay
+                $(forecastDay.dt)}
                 </div>
-                <img src="http://openweathermap.org/img/wn/50d@2x.png" 
+                <img src="http://openweathermap.org/img/wn/${forecastDay.weather[0].icon}@2x.png" 
                 alt=""
                 width="36"/>
                 <div class="weather-forecast-temperatures">
                   <span class="weather-forecast-temperature-max">
-                18
+                ${forecastDay.temp.max}"</span>
                 <span class="weather-forecast-temperature-min">
                 
-                 12
+                 ${forecastDay.temp.min}"
                  </span>
 </div>
               </div>
@@ -129,4 +136,3 @@ let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
 searchCity("Yaounde");
-displayForecast;
