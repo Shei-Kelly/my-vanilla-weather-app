@@ -23,8 +23,10 @@ function formatDate(timestamp) {
 function formatDay(timestamp) {
   let date = new Date(timestamp * 1000);
   let day = day.getDate();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  return day;
+
+  return days[day];
 }
 
 function displayForecast(response) {
@@ -34,7 +36,8 @@ function displayForecast(response) {
   let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"];
 
   let forecastHTML = ` <div class="row">`;
-  days.forEach(function (forecastDay) {
+  days.forEach(function (forecastDay.index) {
+    if (index<6){
     forecastHTML =
       forecastHTML +
       `
@@ -42,21 +45,25 @@ function displayForecast(response) {
                 <div class="weather-forecast-date">i{formatDay
                 $(forecastDay.dt)}
                 </div>
-                <img src="http://openweathermap.org/img/wn/${forecastDay.weather[0].icon}@2x.png" 
+                ${index}
+                <img src="http://openweathermap.org/img/wn/${
+                  forecastDay.weather[0].icon
+                }@2x.png" 
                 alt=""
                 width="36"/>
                 <div class="weather-forecast-temperatures">
                   <span class="weather-forecast-temperature-max">
-                ${forecastDay.temp.max}"</span>
+                ${Math.round(forecastDay.temp.max)}"</span>
                 <span class="weather-forecast-temperature-min">
                 
-                 ${forecastDay.temp.min}"
+                 ${Math.round(forecastDay.temp.min)}"
                  </span>
 </div>
               </div>
             
           
     `;
+      }
   });
 
   forecastHTML = forecastHTML + `</div>`;
@@ -106,33 +113,8 @@ function search(event) {
   let cityInputElement = document.querySelector("#city-input");
   searchCity(cityInputElement.value);
 }
-function displayFahrenheitTemperature(event) {
-  event.preventDefault();
-  let temperatureElement = document.querySelector("#temperature");
-  // remove the active class from the celsius link
-  celsiusLink.classList.remove("active");
-  // add the active link to fahrenheit
-  fahrenheitLink.classList.add("active");
-  let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
-  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
-}
+
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", search);
-
-function displayCelsiusTemperature(event) {
-  event.preventDefault();
-  celsiusLink.classList.add("active");
-  fahrenheitLink.classList.remove("active");
-  let temperatureElement = document.querySelector("#temperature");
-  temperatureElement.innerHTML = Math.round(celsiusTemperature);
-}
-
-let celsiusTemperature = null;
-
-let fahrenheitLink = document.querySelector("#fahrenheit-link");
-fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
-
-let celsiusLink = document.querySelector("#celsius-link");
-celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
 searchCity("Yaounde");
