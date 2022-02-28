@@ -2,11 +2,11 @@ function formatDate(timestamp) {
   let date = new Date(timestamp);
   let hours = date.getHours();
   if (hours < 10) {
-    hours = "0${hours}";
+    hours = `0${hours}`;
   }
   let minutes = date.getMinutes();
   if (minutes < 10) {
-    minutes = "0${minutes}";
+    minutes = `0${minutes}`;
   }
   let days = [
     "Sunday",
@@ -22,7 +22,7 @@ function formatDate(timestamp) {
 }
 function formatDay(timestamp) {
   let date = new Date(timestamp * 1000);
-  let day = day.getDate();
+  let day = date.getDate();
   let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return days[day];
@@ -32,7 +32,7 @@ function displayForecast(response) {
   let forecastElement = document.querySelector("#forecast");
   let forecast = response.data.daily;
 
-  let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"];
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   let forecastHTML = ` <div class="row">`;
   forecast.forEach(function (forecastDay, index) {
@@ -42,10 +42,11 @@ function displayForecast(response) {
         `
      <div class="col-2">
      
-              <div class="weather-forecast-date">i{formatDay
-                $(forecastDay.dt)}
-                </div>
-                ${index}
+              <div class="weather-forecast-date">
+                ${
+                  days[new Date(forecastDay.dt * 1000).getDay()]
+                }                </div>
+
                 <img src="http://openweathermap.org/img/wn/${
                   forecastDay.weather[0].icon
                 }@2x.png" 
@@ -54,10 +55,10 @@ function displayForecast(response) {
                  
                 <div class="weather-forecast-temperatures">
                   <span class="weather-forecast-temperature-max">
-                ${Math.round(forecastDay.temp.max)}"</span>
+                ${Math.round(forecastDay.temp.max)}º</span>
                 <span class="weather-forecast-temperature-min">
                 
-                 ${Math.round(forecastDay.temp.min)}"
+                 ${Math.round(forecastDay.temp.min)}º
                  </span>
 </div>
               </div>
@@ -97,7 +98,7 @@ function displayTemperature(response) {
 
   iconElement.setAttribute(
     "src",
-    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}d@2x.png`
+    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
   iconElement.setAttribute("alt", response.data.weather[0].description);
 
